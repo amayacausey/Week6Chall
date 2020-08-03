@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -20,6 +17,12 @@ public class HomeController {
 
     @Autowired
     RoleRepository roleRepository;
+
+    @Autowired
+    EmployeeRepository employeeRepository;
+
+    @Autowired
+    DepartmentRepository departmentRepository;
 
     @GetMapping("/register")
     public String showRegistrationPage(Model model) {
@@ -72,5 +75,59 @@ public class HomeController {
     @RequestMapping("/admin")
     public String admin(){
         return "admin";
+    }
+
+    @RequestMapping ("/addEmployee")
+    public String addEmployee(Model model){
+        model.addAttribute("employee",new Employee());
+        model.addAttribute("department",new Department());
+        return "addEmployee";
+    }
+    @PostMapping ("/processEmployee")
+    public String processDepartment (@Valid Employee employee,BindingResult result) {
+  if (result.hasErrors()){
+        return "addEmployee";
+    }
+        employeeRepository.save(employee);
+        return "redirect:/";
+}
+
+    @RequestMapping("/addDepartment")
+    public String addDepartment(Model model){
+        model.addAttribute("department",new Department());
+        model.addAttribute("employee",new Employee());
+        return "addDepartment";
+    }
+
+    @PostMapping("/processDepartment")
+    public String processDepartment (@Valid Department department,BindingResult result) {
+        if (result.hasErrors()){
+            return "addDepartment";
+        }
+        departmentRepository.save(department);
+        return "redirect:/";
+    }
+    @RequestMapping("/listEmployee")
+    public String listEmployee (Model model){
+        model.addAttribute("employee",employeeRepository.findAll());
+        model.addAttribute("department",departmentRepository.findAll());
+
+        return "listEmployee";
+    }
+
+    @RequestMapping("/listDepartment")
+    public String listDepartment (Model model){
+        model.addAttribute("department", departmentRepository.findAll());
+        return "listDepartment";
+    }
+    @RequestMapping("/detailsEmployee/{id}")
+    public String detailsEmployee(@PathVariable("id") long id, Model model){
+        model.addAttribute("employee",employeeRepository.findById(id).get());
+        return "employeeDetails";
+    }
+    @RequestMapping("/updateEmployee/{id}")
+    public String updateEmployee(@PathVariable("id") long id, Model model) {
+        model.addAttribute("employee", employeeRepository.findById(id).get());
+        return "addEmployee";
     }
 }

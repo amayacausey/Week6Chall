@@ -8,7 +8,28 @@
     <title></title>
 </head>
 <body>
+<form action="#" th:action="@{/processEmployee}" th:object="${employee}" method="post">
+    Name: <input type="text" th:field="*{name}">
+    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span><br>
 
+    Job Title: <input type="text" th:field="*{jobtitle}">
+    <span th:if="${#fields.hasErrors('jobtitle')}" th:errors="*{jobtitle}"></span><br>
+
+    Department:  <input type="text" th:field="*{department}">
+    <span th:if="${#fields.hasErrors('department')}" th:errors="*{department}"></span><br>
+
+<!--    <select name="department">-->
+<!--        <option th:each="dpt:${department}" th:value="dpt.id" th:text="department">-->
+
+<!--        </option>-->
+<!--    </select>-->
+
+    <input type="submit" value="submit">
+
+
+
+
+</form>
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"

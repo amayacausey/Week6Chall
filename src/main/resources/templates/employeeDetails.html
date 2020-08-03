@@ -8,7 +8,13 @@
     <title></title>
 </head>
 <body>
-
+<div th:each="employees : ${employee}">
+    Employee Name: [[${employee.name}]]
+    Job Title: [[${employee.jobtitle}]]
+    Department: [[${employee.department}]]
+    <a th:href="@{/listEmployee}"><button type="button" class="btn btn-outline-secondary">List Employees</button></a>
+    <a th:href="@{/employeeDetails{id}(id=${employee.id})}"><button type="button" class="btn btn-outline-secondary">Details</button></a>
+</div>
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
